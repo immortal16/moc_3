@@ -92,6 +92,7 @@ def meet_middle(C, N, l=56):
     for i in S:
         M_s = C * modinv(T_[i], N) % N
         for j in S:
+            print(i, j)
             if M_s == T_[j]:
                 return i * T[j]
 
@@ -109,7 +110,7 @@ def task1():
 def task2():
     C, N = data_parser('MitM_RSA_2048_56_hard_15.txt', 2)
     M = meet_middle(C, N)
-    with open('results.txt', mode='ф') as file:
+    with open('results.txt', mode='a') as file:
         file.write('\n\nTask2 M:\n\n')
         file.write(hex(M))
 
