@@ -55,8 +55,8 @@ def data_parser(path, mode):
 
     if mode == 2:
 
-        C = int(config.get('RSA', f'c{i}'), 16)
-        N = int(config.get('RSA', f'n{i}'), 16)
+        C = int(config.get('RSA', 'c'), 16)
+        N = int(config.get('RSA', 'n'), 16)
 
         return C, N
 
