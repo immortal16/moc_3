@@ -83,7 +83,7 @@ def small_exp(C, N, e=5):
     return root(c, e)
 
 
-def meet_middle(C, N, l=56):
+def meet_middle(C, N, l=20):
     S = range(1, 2**(l//2) + 1)
 
     T  = [i for i in S]
@@ -93,8 +93,8 @@ def meet_middle(C, N, l=56):
         M_s = C * modinv(T_[i], N) % N
         for j in S:
             print(i, j)
-            if M_s == T_[j]:
-                return i * T[j]
+            if M_s == T_[j - 1]:
+                return i * T[j - 1]
 
     return 'plaintext was not found'
 
@@ -108,12 +108,12 @@ def task1():
 
 
 def task2():
-    C, N = data_parser('MitM_RSA_2048_56_hard_15.txt', 2)
+    C, N = data_parser('MitM_RSA_2048_20_regular_15.txt.txt', 2)
     M = meet_middle(C, N)
     with open('results.txt', mode='a') as file:
         file.write('\n\nTask2 M:\n\n')
         file.write(hex(M))
 
 
-task1()
+#task1()
 task2()
