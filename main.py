@@ -27,27 +27,38 @@ def chinese_remainder(N, A):
     return summ % prod
 
 
-def data_parser(path):
+def data_parser(path, mode):
+
+    cfg = path[:-3] + 'ini'
 
     with open(path, mode='r') as file:
         content = file.read().lower()
         num_lines = (content.count('\n') + 1) // 2
 
-    with open(path[:-3] + 'ini', mode='w') as file:
+    with open(cfg, mode='w') as file:
         file.write('[RSA]\n\n')
         file.write(content)
 
     config = ConfigParser()
-    config.read(path[:-3] + 'ini')
+    config.read(cfg)
 
-    C = []
-    N = []
+    if mode == 1:
 
-    for i in range(1, num_lines + 1):
-        C.append(int(config.get('RSA', f'c{i}'), 16))
-        N.append(int(config.get('RSA', f'n{i}'), 16))
+        C = []
+        N = []
 
-    return C, N
+        for i in range(1, num_lines + 1):
+            C.append(int(config.get('RSA', f'c{i}'), 16))
+            N.append(int(config.get('RSA', f'n{i}'), 16))
+
+        return C, N
+
+    if mode == 2:
+
+        C = int(config.get('RSA', f'c{i}'), 16)
+        N = int(config.get('RSA', f'n{i}'), 16)
+
+        return C, N
 
 
 def root(x, n):
