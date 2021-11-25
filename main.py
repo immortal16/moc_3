@@ -96,3 +96,23 @@ def meet_middle(C, N, l=56):
                 return i * T[j]
 
     return 'plaintext was not found'
+
+
+def task1():
+    C, N = data_parser('SE_RSA_1024_5_hard_15.txt', 1)
+    M = small_exp(C, N)
+    with open('results.txt', mode='w') as file:
+        file.write('Task1 M:\n\n')
+        file.write(hex(M))
+
+
+def task2():
+    C, N = data_parser('MitM_RSA_2048_56_hard_15.txt', 2)
+    M = meet_middle(C, N)
+    with open('results.txt', mode='ф') as file:
+        file.write('\n\nTask2 M:\n\n')
+        file.write(hex(M))
+
+
+task1()
+task2()
