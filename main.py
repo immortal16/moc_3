@@ -78,6 +78,21 @@ def root(x, n):
     return mid + 1
 
 
-def small_exp(C, N, e):
+def small_exp(C, N, e=5):
     c = chinese_remainder(N, C)
     return root(c, e)
+
+
+def meet_middle(C, N, l=56):
+    S = range(1, 2**(l//2) + 1)
+
+    T  = [i for i in S]
+    T_ = [pow(i, 65537, N) for i in S]
+
+    for i in S:
+        M_s = C * modinv(T_[i], N) % N
+        for j in S:
+            if M_s == T_[j]:
+                return i * T[j]
+
+    return 'plaintext was not found'
