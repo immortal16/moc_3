@@ -65,3 +65,8 @@ def root(x, n):
         else:
             return mid
     return mid + 1
+
+
+def small_exp(C, N, e):
+    c = chinese_remainder(N, C)
+    return root(c, e)
