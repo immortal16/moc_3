@@ -2,16 +2,22 @@ from functools import reduce
 from configparser import ConfigParser
 
 
-def egcd(a, b):
-    if a == 0:
-        return b, 0, 1
-    else:
-        g, y, x = egcd(b % a, a)
-        return g, x - (b // a) * y, y
+def egcd(b, n):
+
+    x0, x1, y0, y1 = 1, 0, 0, 1
+
+    while n != 0:
+        q, b, n = b // n, n, b % n
+        x0, x1 = x1, x0 - q * x1
+        y0, y1 = y1, y0 - q * y1
+
+    return b, x0, y0
 
 
 def modinv(a, m):
+
     g, x, y = egcd(a, m)
+
     if g != 1:
         raise Exception('modular inverse does not exist')
     else:
@@ -19,11 +25,14 @@ def modinv(a, m):
 
 
 def chinese_remainder(N, A):
+
     summ = 0
     prod = reduce(lambda x, y: x * y, N)
+
     for n, a in zip(N, A):
         p = prod // n
         summ += a * modinv(p, n) * p
+
     return summ % prod
 
 
@@ -62,11 +71,15 @@ def data_parser(path, mode):
 
 
 def root(x, n):
+
     high = 1
     mid = 0
+
     while high ** n <= x:
         high *= 2
+
     low = high // 2
+
     while low < high:
         mid = (low + high) // 2
         if low < mid and mid**n < x:
@@ -75,15 +88,19 @@ def root(x, n):
             high = mid
         else:
             return mid
+
     return mid + 1
 
 
 def small_exp(C, N, e=5):
+
     c = chinese_remainder(N, C)
+
     return root(c, e)
 
 
 def meet_middle(C, N, l=20):
+
     S = range(1, 2**(l//2) + 1)
 
     T  = [i for i in S]
@@ -92,7 +109,6 @@ def meet_middle(C, N, l=20):
     for i in S:
         M_s = C * modinv(T_[i], N) % N
         for j in S:
-            print(i, j)
             if M_s == T_[j - 1]:
                 return i * T[j - 1]
 
@@ -100,20 +116,24 @@ def meet_middle(C, N, l=20):
 
 
 def task1():
+
     C, N = data_parser('SE_RSA_1024_5_hard_15.txt', 1)
     M = small_exp(C, N)
+
     with open('results.txt', mode='w') as file:
         file.write('Task1 M:\n\n')
         file.write(hex(M))
 
 
 def task2():
-    C, N = data_parser('MitM_RSA_2048_20_regular_15.txt.txt', 2)
+
+    C, N = data_parser('MitM_RSA_2048_20_regular_15.txt', 2)
     M = meet_middle(C, N)
+
     with open('results.txt', mode='a') as file:
         file.write('\n\nTask2 M:\n\n')
         file.write(hex(M))
 
 
-#task1()
+task1()
 task2()
