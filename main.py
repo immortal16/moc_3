@@ -1,4 +1,5 @@
 from functools import reduce
+from configparser import ConfigParser
 
 
 def egcd(a, b):
@@ -24,3 +25,26 @@ def chinese_remainder(N, A):
         p = prod // n
         summ += a * modinv(p, n) * p
     return summ % prod
+
+
+def data_parser(path):
+
+    with open(path, mode='r') as file:
+        content = file.read().lower()
+        num_lines = (content.count('\n') + 1) // 2
+
+    with open(path[:-3] + 'ini', mode='w') as file:
+        file.write('[RSA]\n\n')
+        file.write(content)
+
+    config = ConfigParser()
+    config.read(path[:-3] + 'ini')
+
+    C = []
+    N = []
+
+    for i in range(1, num_lines + 1):
+        C.append(int(config.get('RSA', f'c{i}'), 16))
+        N.append(int(config.get('RSA', f'n{i}'), 16))
+
+    return C, N
