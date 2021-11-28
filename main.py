@@ -107,7 +107,7 @@ def meet_middle(C, N, l=20):
     T_ = [pow(i, 65537, N) for i in S]
 
     for i in S:
-        M_s = C * modinv(T_[i], N) % N
+        M_s = C * modinv(T_[i - 1], N) % N
         for j in S:
             if M_s == T_[j - 1]:
                 return i * T[j - 1]
