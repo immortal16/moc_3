@@ -1,3 +1,4 @@
+import time
 from functools import reduce
 from configparser import ConfigParser
 
@@ -118,21 +119,27 @@ def meet_middle(C, N, l=20):
 def task1():
 
     C, N = data_parser('SE_RSA_1024_5_hard_15.txt', 1)
+    start_time = time.time()
     M = small_exp(C, N)
+    end_time = time.time()
 
     with open('results.txt', mode='w') as file:
-        file.write('Task1 M:\n\n')
+        file.write('Task1 M:\n')
         file.write(hex(M))
+        file.write(f'\nFound in {end_time - start_time} seconds.')
 
 
 def task2():
 
     C, N = data_parser('MitM_RSA_2048_20_regular_15.txt', 2)
+    start_time = time.time()
     M = meet_middle(C, N)
+    end_time = time.time()
 
     with open('results.txt', mode='a') as file:
-        file.write('\n\nTask2 M:\n\n')
+        file.write('\n\nTask2 M:\n')
         file.write(hex(M))
+        file.write(f'\nFound in {end_time - start_time} seconds.')
 
 
 task1()
